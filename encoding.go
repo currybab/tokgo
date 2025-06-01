@@ -3,9 +3,10 @@ package tokgo
 var VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY = "VERY_LARGE_TOKENIZER_BYTE_THRESHOLD"
 
 type Encoding interface {
-	Encode(text string) *EncodingResult
+	EncodeToIntArray(text string) []int
+	Encode(text string, maxTokens int) *EncodingResult
 	EncodeOrdinaryToIntArray(text string) []int
-	EncodeOrdinaryToEncodingResult(text string, maxTokens int) *EncodingResult
+	EncodeOrdinary(text string, maxTokens int) *EncodingResult
 	CountTokens(text string) int
 	CountTokensOrdinary(text string) int
 	Decode(tokens []int) string

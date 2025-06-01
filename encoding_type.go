@@ -18,6 +18,16 @@ var encodingTypeMap = map[string]EncodingType{
 	"o200k_base":  O200K_BASE,
 }
 
+func EncodingTypeValues() []EncodingType {
+	return []EncodingType{
+		R50K_BASE,
+		P50K_BASE,
+		P50K_EDIT,
+		CL100K_BASE,
+		O200K_BASE,
+	}
+}
+
 func (e EncodingType) GetName() string {
 	return string(e)
 }
