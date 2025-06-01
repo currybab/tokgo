@@ -42,17 +42,17 @@ func (i *internalResult) ToTokenCount() int {
 }
 
 type GptBytePairEncoding struct {
-	encoder        *encoder.TokenEncoder
+	Encoder        *encoder.TokenEncoder
 	name           string
 	pattern        *regexp.Regexp
 	specialEncoder *encoder.SpecialEncoder
 }
 
-func NewGptBytePairEncoding(params tokgo.GptBytePairEncodingParams) *GptBytePairEncoding {
+func NewGptBytePairEncoding(params *tokgo.GptBytePairEncodingParams) *GptBytePairEncoding {
 	return &GptBytePairEncoding{
 		name:           params.GetName(),
 		pattern:        params.GetPattern(),
-		encoder:        encoder.NewTokenEncoder(params.GetEncoder()),
+		Encoder:        encoder.NewTokenEncoder(params.GetEncoder()),
 		specialEncoder: encoder.NewSpecialEncoder(params.GetSpecialTokensEncoder()),
 	}
 }
@@ -73,7 +73,7 @@ func (e *GptBytePairEncoding) encodeOrdinaryInternal(text string, maxTokenCount 
 	}
 
 	out := make([]int, 0)
-	tokenCount := e.encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, []byte(text), out, nil)
+	tokenCount := e.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, []byte(text), out, nil)
 
 	if keepEncodings && maxTokenCount != math.MaxInt {
 		// Make sure we didn't break the multibyte character
@@ -125,7 +125,7 @@ func (e *GptBytePairEncoding) Decode(tokens []int) string {
 func (e *GptBytePairEncoding) DecodeBytes(tokens []int) []byte {
 	out := make([]byte, 0, 10*len(tokens))
 	for i := 0; i < len(tokens); i++ {
-		decodedToken := e.encoder.DecodeToken(tokens[i], e.specialEncoder)
+		decodedToken := e.Encoder.DecodeToken(tokens[i], e.specialEncoder)
 		out = append(out, decodedToken...)
 	}
 	return out
