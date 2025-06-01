@@ -1,0 +1,9 @@
+package registry
+
+import "github.com/nerdface-ai/tokgo"
+
+func NewDefaultEncodingRegistry() tokgo.EncodingRegistry {
+	reg := &DefaultEncodingRegistry{}
+	reg.initializeDefaultEncodings()
+	return reg
+}
