@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/nerdface-ai/tokgo"
-	"github.com/nerdface-ai/tokgo/internals/encoder"
+	"github.com/nerdface-ai/tokgo/encoder"
 )
 
 type internalResult struct {
@@ -73,7 +73,7 @@ func (e *GptBytePairEncoding) encodeOrdinaryInternal(text string, maxTokenCount 
 	}
 
 	out := make([]int, 0)
-	tokenCount := e.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, []byte(text), out, nil)
+	tokenCount := e.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, []byte(text), &out, nil)
 
 	if keepEncodings && maxTokenCount != math.MaxInt {
 		// Make sure we didn't break the multibyte character

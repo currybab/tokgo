@@ -12,8 +12,8 @@ import (
 	"strings"
 
 	"github.com/nerdface-ai/tokgo"
-	"github.com/nerdface-ai/tokgo/internals/encoding"
-	"github.com/nerdface-ai/tokgo/internals/parser"
+	"github.com/nerdface-ai/tokgo/encoding"
+	"github.com/nerdface-ai/tokgo/parser"
 )
 
 // Special token constants
@@ -142,7 +142,7 @@ func compileRegex(pattern string, caseInsensitive bool) *regexp.Regexp {
 // getResourcePath returns the path to a resource file relative to this source file
 func getResourcePath(fileName string) string {
 	_, currentFilePath, _, _ := runtime.Caller(1)
-	// Go up two directories: from internals/factory to project root
+	// Go up two directories: from factory to project root
 	baseDir := filepath.Dir(filepath.Dir(filepath.Dir(currentFilePath)))
 	return filepath.Join(baseDir, "resources", fileName)
 }
@@ -188,11 +188,11 @@ func NewCl100kGptBytePairEncoding(params *tokgo.GptBytePairEncodingParams) tokgo
 	}
 }
 
-func (e *cl100kGptBytePairEncoding) encodeOrdinaryInternal(text string, maxTokenCount int, keepEncodings bool, out []int) int {
+func (e *cl100kGptBytePairEncoding) EncodeOrdinaryInternal(text string, maxTokenCount int, keepEncodings bool, out *[]int) int {
 	tokenCount := []int{0}
 	ranks := make([]int, 0)
 	parser.Split(text, func(utf8BytesList []byte) bool {
-		tokenCount[0] += e.GptBytePairEncoding.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, utf8BytesList, out, ranks)
+		tokenCount[0] += e.GptBytePairEncoding.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, utf8BytesList, out, &ranks)
 		return tokenCount[0] >= maxTokenCount
 	})
 	return tokenCount[0]

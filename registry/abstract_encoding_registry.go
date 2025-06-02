@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/nerdface-ai/tokgo"
-	"github.com/nerdface-ai/tokgo/internals/factory"
+	"github.com/nerdface-ai/tokgo/factory"
 )
 
 type AbstractEncodingRegistry struct {

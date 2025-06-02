@@ -7,3 +7,7 @@ func NewDefaultEncodingRegistry() tokgo.EncodingRegistry {
 	reg.initializeDefaultEncodings()
 	return reg
 }
+
+func NewLazyEncodingRegistry() tokgo.EncodingRegistry {
+	return &LazyEncodingRegistry{}
+}

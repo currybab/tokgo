@@ -39,7 +39,7 @@ func RemoveNode(nodeMap *linkedhashmap.Map[int, *rankNode], rankMap *treemap.Map
 	}
 }
 
-func CalculateTokensLarge(tokenEncoder *TokenEncoder, maxTokenCount int, keepEncodings bool, out []int, match []byte) int {
+func CalculateTokensLarge(tokenEncoder *TokenEncoder, maxTokenCount int, keepEncodings bool, out *[]int, match []byte) int {
 	rankMap := treemap.New[int, *linkedhashmap.Map[int, *rankNode]]()
 
 	var prev *rankNode = nil
@@ -135,12 +135,12 @@ func CalculateTokensLarge(tokenEncoder *TokenEncoder, maxTokenCount int, keepEnc
 
 	if keepEncodings {
 		headNodeMap, _ := rankMap.Get(MAX_RANK)
-		for head, _ := headNodeMap.Get(0); head.next != nil && len(out) < maxTokenCount; head = head.next {
+		for head, _ := headNodeMap.Get(0); head.next != nil && len(*out) < maxTokenCount; head = head.next {
 			token := tokenEncoder.Encode(match, head.index, head.next.index)
 			if token == MAX_RANK {
 				panic("Token should not be MAX_RANK")
 			}
-			out = append(out, token)
+			*out = append(*out, token)
 		}
 	}
 

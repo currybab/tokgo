@@ -126,12 +126,12 @@ func getPreviousIndex(ranks []int, previousIndex int) int {
 	return previousIndex
 }
 
-func (t *TokenEncoder) AddTokensAndGetCount(maxTokenCount int, keepEncodings bool, byteArray []byte, out []int, ranks []int) int {
+func (t *TokenEncoder) AddTokensAndGetCount(maxTokenCount int, keepEncodings bool, byteArray []byte, out *[]int, ranks *[]int) int {
 	match := byteArray
 	encoded := t.encode(match)
 	if encoded != MAX_RANK {
 		if keepEncodings {
-			out = append(out, encoded)
+			*out = append(*out, encoded)
 		}
 		return 1
 	} else {
@@ -143,12 +143,12 @@ func (t *TokenEncoder) AddTokensAndGetCount(maxTokenCount int, keepEncodings boo
 	}
 }
 
-func (t *TokenEncoder) calculateTokensSmall(maxTokenCount int, keepEncodings bool, out []int, ranks []int, match []byte) int {
+func (t *TokenEncoder) calculateTokensSmall(maxTokenCount int, keepEncodings bool, out *[]int, ranks *[]int, match []byte) int {
 	length := len(match)
 	if length <= 1 {
 		panic("Already filtered out")
 	}
-	ranks = make([]int, 0, length+1)
+	*ranks = make([]int, 0, length+1)
 
 	minRankIndex := -1
 	for i, minRank := 0, MAX_RANK; i < length+1; i++ {
@@ -159,15 +159,15 @@ func (t *TokenEncoder) calculateTokensSmall(maxTokenCount int, keepEncodings boo
 				minRank = encoded
 			}
 		}
-		ranks = append(ranks, encoded)
+		*ranks = append(*ranks, encoded)
 	}
-	tokenCount := t.MergeBytesAndGetTokenCount(match, length, ranks, minRankIndex)
+	tokenCount := t.MergeBytesAndGetTokenCount(match, length, *ranks, minRankIndex)
 	if keepEncodings {
-		for start, end := 0, 1; end < len(ranks) && len(out) < maxTokenCount; end++ {
-			if ranks[end] != dummy_rank {
+		for start, end := 0, 1; end < len(*ranks) && len(*out) < maxTokenCount; end++ {
+			if (*ranks)[end] != dummy_rank {
 				token := t.Encode(match, start, end)
 				if token != MAX_RANK {
-					out = append(out, token)
+					*out = append(*out, token)
 					start = end
 				}
 			}
