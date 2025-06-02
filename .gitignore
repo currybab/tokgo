@@ -24,11 +24,12 @@ profile.cov
 go.work
 go.work.sum
 
-.DS_Store
-
 # env file
 .env
 
 # Editor/IDE
 # .idea/
 # .vscode/
+__debug_bin*
+
+.DS_Store
