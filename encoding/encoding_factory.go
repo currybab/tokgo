@@ -1,4 +1,4 @@
-package factory
+package encoding
 
 import (
 	"bufio"
@@ -13,7 +13,6 @@ import (
 	regexp "github.com/dlclark/regexp2"
 
 	"github.com/nerdface-ai/tokgo"
-	"github.com/nerdface-ai/tokgo/encoding"
 	"github.com/nerdface-ai/tokgo/parser"
 )
 
@@ -79,10 +78,13 @@ func Cl100kBase() tokgo.Encoding {
 	if err != nil {
 		panic(err)
 	}
-	regex, _ := regexp.Compile("'(?:[sdmt]|ll|ve|re)|[^\r\n\\p{L}\\p{N}]?+\\p{L}+|\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]++[\r\n]*|\\s*[\r\n]|\\s+(?!\\S)|\\s+", regexp.None)
+	// regex, err := regexp.Compile("'(?:[sdmt]|ll|ve|re)|[^\r\n\\p{L}\\p{N}]?+\\p{L}+|\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]++[\r\n]*|\\s*[\r\n]|\\s+(?!\\S)|\\s+", regexp.None)
+	// if err != nil {
+	// 	panic(err)
+	// }
 	params := tokgo.NewGptBytePairEncodingParams(
 		"cl100k_base",
-		regex,
+		nil,
 		mergeableRanks,
 		SPECIAL_TOKENS_CL100K_BASE,
 	)
@@ -103,7 +105,10 @@ func O200kBase() tokgo.Encoding {
 		`\s+(?!\S)`,
 		`\s+`,
 	}
-	regex, _ := regexp.Compile(strings.Join(patterns, "|"), regexp.None)
+	regex, err := regexp.Compile(strings.Join(patterns, "|"), regexp.None)
+	if err != nil {
+		panic(err)
+	}
 	params := tokgo.NewGptBytePairEncodingParams(
 		"o200k_base",
 		regex,
@@ -114,7 +119,10 @@ func O200kBase() tokgo.Encoding {
 }
 
 func from50kParameters(name, fileName string, specialTokens map[string]int) tokgo.Encoding {
-	regex, _ := regexp.Compile(`'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+`, regexp.None)
+	regex, err := regexp.Compile(`'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+`, regexp.None)
+	if err != nil {
+		panic(err)
+	}
 	mergeableRanks, err := loadMergeableRanks(fileName)
 	if err != nil {
 		panic(err)
@@ -166,17 +174,17 @@ func loadMergeableRanks(fileName string) (map[string]int, error) {
 	return result, nil
 }
 
-type cl100kGptBytePairEncoding struct {
-	*encoding.GptBytePairEncoding
+type Cl100kGptBytePairEncoding struct {
+	*GptBytePairEncoding
 }
 
 func NewCl100kGptBytePairEncoding(params *tokgo.GptBytePairEncodingParams) tokgo.Encoding {
-	return &cl100kGptBytePairEncoding{
-		GptBytePairEncoding: encoding.NewGptBytePairEncoding(params),
+	return &Cl100kGptBytePairEncoding{
+		GptBytePairEncoding: NewGptBytePairEncoding(params),
 	}
 }
 
-func (e *cl100kGptBytePairEncoding) EncodeOrdinaryInternal(text string, maxTokenCount int, keepEncodings bool, out *[]int) int {
+func (e *Cl100kGptBytePairEncoding) encodeOrdinaryInternalToInt(text string, maxTokenCount int, keepEncodings bool, out *[]int) int {
 	tokenCount := []int{0}
 	ranks := make([]int, 0)
 	parser.Split(text, func(utf8BytesList []byte) bool {
@@ -187,5 +195,5 @@ func (e *cl100kGptBytePairEncoding) EncodeOrdinaryInternal(text string, maxToken
 }
 
 func FromParameters(params *tokgo.GptBytePairEncodingParams) tokgo.Encoding {
-	return NewCl100kGptBytePairEncoding(params)
+	return NewGptBytePairEncoding(params)
 }

@@ -9,6 +9,7 @@ import (
 
 	"github.com/nerdface-ai/tokgo"
 	"github.com/nerdface-ai/tokgo/encoder"
+	"github.com/nerdface-ai/tokgo/parser"
 )
 
 type internalResult struct {
@@ -96,6 +97,17 @@ func (e *GptBytePairEncoding) encodeOrdinaryInternal(text string, maxTokenCount 
 }
 
 func (e *GptBytePairEncoding) encodeOrdinaryInternalToInt(text string, maxTokenCount int, keepEncodings bool, out *[]int) int {
+	if e.pattern == nil {
+		// if cl100k
+		tokenCount := []int{0}
+		ranks := make([]int, 0)
+		parser.Split(text, func(utf8BytesList []byte) bool {
+			tokenCount[0] += e.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, utf8BytesList, out, &ranks)
+			return tokenCount[0] >= maxTokenCount
+		})
+		return tokenCount[0]
+	}
+
 	tokenCount := 0
 	ranks := make([]int, 0, 10)
 

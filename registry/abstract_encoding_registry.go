@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/nerdface-ai/tokgo"
-	"github.com/nerdface-ai/tokgo/factory"
+	"github.com/nerdface-ai/tokgo/encoding"
 )
 
 type AbstractEncodingRegistry struct {
@@ -67,7 +67,7 @@ func (a *AbstractEncodingRegistry) GetEncodingForModelType(modelType tokgo.Model
 }
 
 func (a *AbstractEncodingRegistry) RegisterGptBytePairEncoding(parameters *tokgo.GptBytePairEncodingParams) (tokgo.EncodingRegistry, error) {
-	return a.RegisterCustomEncoding(factory.FromParameters(parameters))
+	return a.RegisterCustomEncoding(encoding.FromParameters(parameters))
 }
 
 func (a *AbstractEncodingRegistry) RegisterCustomEncoding(encoding tokgo.Encoding) (tokgo.EncodingRegistry, error) {
@@ -83,15 +83,15 @@ func (a *AbstractEncodingRegistry) RegisterCustomEncoding(encoding tokgo.Encodin
 func (a *AbstractEncodingRegistry) AddEncoding(encodingType tokgo.EncodingType) error {
 	switch encodingType {
 	case tokgo.R50K_BASE:
-		a.encodings.Store(encodingType.GetName(), factory.R50kBase())
+		a.encodings.Store(encodingType.GetName(), encoding.R50kBase())
 	case tokgo.P50K_BASE:
-		a.encodings.Store(encodingType.GetName(), factory.P50kBase())
+		a.encodings.Store(encodingType.GetName(), encoding.P50kBase())
 	case tokgo.P50K_EDIT:
-		a.encodings.Store(encodingType.GetName(), factory.P50kEdit())
+		a.encodings.Store(encodingType.GetName(), encoding.P50kEdit())
 	case tokgo.CL100K_BASE:
-		a.encodings.Store(encodingType.GetName(), factory.Cl100kBase())
+		a.encodings.Store(encodingType.GetName(), encoding.Cl100kBase())
 	case tokgo.O200K_BASE:
-		a.encodings.Store(encodingType.GetName(), factory.O200kBase())
+		a.encodings.Store(encodingType.GetName(), encoding.O200kBase())
 	default:
 		return fmt.Errorf("unknown encoding type %s", encodingType.GetName())
 	}
