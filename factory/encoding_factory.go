@@ -6,10 +6,11 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
+
+	regexp "github.com/dlclark/regexp2"
 
 	"github.com/nerdface-ai/tokgo"
 	"github.com/nerdface-ai/tokgo/encoding"
@@ -78,7 +79,7 @@ func Cl100kBase() tokgo.Encoding {
 	if err != nil {
 		panic(err)
 	}
-	regex := compileRegex("'(?:[sdmt]|ll|ve|re)|[^\r\n\\p{L}\\p{N}]?+\\p{L}+|\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]++[\r\n]*|\\s*[\r\n]|\\s+(?!\\S)|\\s+", false)
+	regex, _ := regexp.Compile("'(?:[sdmt]|ll|ve|re)|[^\r\n\\p{L}\\p{N}]?+\\p{L}+|\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]++[\r\n]*|\\s*[\r\n]|\\s+(?!\\S)|\\s+", regexp.None)
 	params := tokgo.NewGptBytePairEncodingParams(
 		"cl100k_base",
 		regex,
@@ -102,7 +103,7 @@ func O200kBase() tokgo.Encoding {
 		`\s+(?!\S)`,
 		`\s+`,
 	}
-	regex := compileRegex(strings.Join(patterns, "|"), false)
+	regex, _ := regexp.Compile(strings.Join(patterns, "|"), regexp.None)
 	params := tokgo.NewGptBytePairEncodingParams(
 		"o200k_base",
 		regex,
@@ -113,7 +114,7 @@ func O200kBase() tokgo.Encoding {
 }
 
 func from50kParameters(name, fileName string, specialTokens map[string]int) tokgo.Encoding {
-	regex := compileRegex(`'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+`, false)
+	regex, _ := regexp.Compile(`'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+`, regexp.None)
 	mergeableRanks, err := loadMergeableRanks(fileName)
 	if err != nil {
 		panic(err)
@@ -127,23 +128,11 @@ func from50kParameters(name, fileName string, specialTokens map[string]int) tokg
 	return FromParameters(params)
 }
 
-func compileRegex(pattern string, caseInsensitive bool) *regexp.Regexp {
-	flags := ""
-	if caseInsensitive {
-		flags = "(?i)"
-	}
-	re, err := regexp.Compile(flags + pattern)
-	if err != nil {
-		panic(err)
-	}
-	return re
-}
-
 // getResourcePath returns the path to a resource file relative to this source file
 func getResourcePath(fileName string) string {
 	_, currentFilePath, _, _ := runtime.Caller(1)
 	// Go up two directories: from factory to project root
-	baseDir := filepath.Dir(filepath.Dir(filepath.Dir(currentFilePath)))
+	baseDir := filepath.Dir(filepath.Dir(currentFilePath))
 	return filepath.Join(baseDir, "resources", fileName)
 }
 
@@ -153,7 +142,6 @@ func loadMergeableRanks(fileName string) (map[string]int, error) {
 		return nil, err
 	}
 	defer file.Close()
-
 	result := make(map[string]int)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {

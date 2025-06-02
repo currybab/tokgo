@@ -3,8 +3,9 @@ package encoding
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
+
+	regexp "github.com/dlclark/regexp2"
 
 	"github.com/nerdface-ai/tokgo"
 	"github.com/nerdface-ai/tokgo/encoder"
@@ -73,7 +74,7 @@ func (e *GptBytePairEncoding) encodeOrdinaryInternal(text string, maxTokenCount 
 	}
 
 	out := make([]int, 0)
-	tokenCount := e.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, []byte(text), &out, nil)
+	tokenCount := e.encodeOrdinaryInternalToInt(text, maxTokenCount, keepEncodings, &out)
 
 	if keepEncodings && maxTokenCount != math.MaxInt {
 		// Make sure we didn't break the multibyte character
@@ -92,6 +93,19 @@ func (e *GptBytePairEncoding) encodeOrdinaryInternal(text string, maxTokenCount 
 	}
 
 	return newInternalResult(out, tokenCount, false, len(text)-1)
+}
+
+func (e *GptBytePairEncoding) encodeOrdinaryInternalToInt(text string, maxTokenCount int, keepEncodings bool, out *[]int) int {
+	tokenCount := 0
+	ranks := make([]int, 0, 10)
+
+	match, _ := e.pattern.FindStringMatch(text)
+	for tokenCount < maxTokenCount && match != nil {
+		bytes := match.Group.String()
+		tokenCount += e.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, []byte(bytes), out, &ranks)
+		match, _ = e.pattern.FindStringMatch(text)
+	}
+	return tokenCount
 }
 
 func (e *GptBytePairEncoding) EncodeToIntArray(text string) []int {

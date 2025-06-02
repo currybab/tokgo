@@ -22,7 +22,7 @@ type TokenEncoder struct {
 }
 
 func NewTokenEncoder(encoder map[string]int) *TokenEncoder {
-	if len(encoder) == 0 {
+	if len(encoder) > 0 {
 		thresholdKey := os.Getenv(tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY)
 		if thresholdKey == "" {
 			thresholdKey = "500"
@@ -40,7 +40,7 @@ func NewTokenEncoder(encoder map[string]int) *TokenEncoder {
 		}
 		//noinspection unchecked
 		keys := tempEncoders.Keys()
-		encoders := make([]map[string]int, keys[len(keys)-1])
+		encoders := make([]map[string]int, keys[len(keys)-1]+1)
 		for _, k := range keys {
 			v, _ := tempEncoders.Get(k)
 			encoders[k] = v

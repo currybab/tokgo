@@ -1,7 +1,7 @@
 package tokgo
 
 import (
-	"regexp"
+	regexp "github.com/dlclark/regexp2"
 )
 
 type GptBytePairEncodingParams struct {

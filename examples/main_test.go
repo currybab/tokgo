@@ -1,11 +1,13 @@
-package main
+package examples
 
 import (
+	"testing"
+
 	"github.com/nerdface-ai/tokgo"
 	"github.com/nerdface-ai/tokgo/registry"
 )
 
-func main() {
+func TestMain(t *testing.T) {
 	reg := registry.NewDefaultEncodingRegistry()
 	enc, _ := reg.GetEncodingByType(tokgo.CL100K_BASE)
 	if enc.Decode(enc.EncodeToIntArray("hello world")) != "hello world" {

@@ -3,11 +3,15 @@ package registry
 import "github.com/nerdface-ai/tokgo"
 
 func NewDefaultEncodingRegistry() tokgo.EncodingRegistry {
-	reg := &DefaultEncodingRegistry{}
+	reg := &DefaultEncodingRegistry{
+		AbstractEncodingRegistry: &AbstractEncodingRegistry{},
+	}
 	reg.initializeDefaultEncodings()
 	return reg
 }
 
 func NewLazyEncodingRegistry() tokgo.EncodingRegistry {
-	return &LazyEncodingRegistry{}
+	return &LazyEncodingRegistry{
+		AbstractEncodingRegistry: &AbstractEncodingRegistry{},
+	}
 }
