@@ -115,7 +115,7 @@ func (e *GptBytePairEncoding) encodeOrdinaryInternalToInt(text string, maxTokenC
 	for tokenCount < maxTokenCount && match != nil {
 		bytes := match.Group.String()
 		tokenCount += e.Encoder.AddTokensAndGetCount(maxTokenCount, keepEncodings, []byte(bytes), out, &ranks)
-		match, _ = e.pattern.FindStringMatch(text)
+		match, _ = e.pattern.FindNextMatch(match)
 	}
 	return tokenCount
 }

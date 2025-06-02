@@ -28,4 +28,9 @@ func TestMain(t *testing.T) {
 	if tt := enc.Decode(enc.Encode("hello world", 10).GetTokens()); tt != "hello world" {
 		panic(tt)
 	}
+
+	if tt := enc.Decode(enc.EncodeToIntArray("안녕하세요.")); tt != "안녕하세요." {
+		panic(tt)
+	}
+	t.Logf("%v", enc.Decode(enc.EncodeToIntArray("안녕하세요.")))
 }
