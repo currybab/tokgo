@@ -12,8 +12,8 @@ import (
 
 	regexp "github.com/dlclark/regexp2"
 
-	"github.com/nerdface-ai/tokgo"
-	"github.com/nerdface-ai/tokgo/parser"
+	"github.com/currybab/tokgo"
+	"github.com/currybab/tokgo/parser"
 )
 
 // Special token constants

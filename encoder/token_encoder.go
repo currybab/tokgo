@@ -7,7 +7,7 @@ import (
 
 	"github.com/emirpasic/gods/v2/maps/treemap"
 
-	"github.com/nerdface-ai/tokgo"
+	"github.com/currybab/tokgo"
 )
 
 const (

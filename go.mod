@@ -1,4 +1,4 @@
-module github.com/nerdface-ai/tokgo
+module github.com/currybab/tokgo
 
 go 1.24.2
 

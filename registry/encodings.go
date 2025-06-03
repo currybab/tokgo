@@ -1,6 +1,6 @@
 package registry
 
-import "github.com/nerdface-ai/tokgo"
+import "github.com/currybab/tokgo"
 
 func NewDefaultEncodingRegistry() tokgo.EncodingRegistry {
 	reg := &DefaultEncodingRegistry{

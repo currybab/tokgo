@@ -5,8 +5,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/nerdface-ai/tokgo"
-	"github.com/nerdface-ai/tokgo/encoding"
+	"github.com/currybab/tokgo"
+	"github.com/currybab/tokgo/encoding"
 )
 
 type AbstractEncodingRegistry struct {
