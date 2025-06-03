@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"github.com/currybab/tokgo"
-	encreg "github.com/currybab/tokgo/registry"
+	"github.com/currybab/tokgo/registry"
 )
 
 func TestMain(t *testing.T) {
-	reg := encreg.NewDefaultEncodingRegistry()
+	reg := registry.NewDefaultEncodingRegistry()
 	enc, _ := reg.GetEncodingByType(tokgo.CL100K_BASE)
 	if tt := enc.Decode(enc.EncodeToIntArray("hello world")); tt != "hello world" {
 		panic(tt)

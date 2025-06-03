@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 	"unicode"
@@ -179,7 +180,7 @@ func Split(input string, fragmentConsumer FragmentConsumer) {
 
 // IsShortContraction checks if a character is a short contraction
 func IsShortContraction(ch int) bool {
-	return strings.IndexRune(SDTM, rune(ch)) >= 0
+	return strings.ContainsRune(SDTM, rune(ch))
 }
 
 // IsLongContraction checks if a character pair forms a long contraction
@@ -240,7 +241,7 @@ func IsLetterOrNumeric(ch int) bool {
 // IsWhitespace checks if a code point is whitespace
 func IsWhitespace(ch int) bool {
 	if ch <= '\r' {
-		return strings.IndexRune(SIMPLE_WHITESPACES, rune(ch)) >= 0
+		return strings.ContainsRune(SIMPLE_WHITESPACES, rune(ch))
 	} else if ch < 0x85 {
 		return ch == ' '
 	} else {
@@ -289,7 +290,7 @@ func AddUtf8Bytes(input []rune, start, end int, dst []byte) []byte {
 			dst = append(dst, byte(0x80|(cp&0x3f)))
 		} else {
 			if cp >= 0x110000 {
-				panic("Invalid code point: " + string(cp))
+				panic(fmt.Sprintf("Invalid code point: %d", cp))
 			}
 			dst = append(dst, byte(0xf0|(cp>>0x12)))
 			dst = append(dst, byte(0x80|((cp>>0xc)&0x3f)))
