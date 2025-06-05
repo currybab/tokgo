@@ -74,7 +74,7 @@ func P50kEdit() tokgo.Encoding {
 }
 
 func Cl100kBase() tokgo.Encoding {
-	mergeableRanks, err := loadMergeableRanks("cl100k_base.tiktoken")
+	mergeableRanks, err := LoadMergeableRanks("cl100k_base.tiktoken")
 	if err != nil {
 		panic(err)
 	}
@@ -92,7 +92,7 @@ func Cl100kBase() tokgo.Encoding {
 }
 
 func O200kBase() tokgo.Encoding {
-	mergeableRanks, err := loadMergeableRanks("o200k_base.tiktoken")
+	mergeableRanks, err := LoadMergeableRanks("o200k_base.tiktoken")
 	if err != nil {
 		panic(err)
 	}
@@ -123,7 +123,7 @@ func from50kParameters(name, fileName string, specialTokens map[string]int) tokg
 	if err != nil {
 		panic(err)
 	}
-	mergeableRanks, err := loadMergeableRanks(fileName)
+	mergeableRanks, err := LoadMergeableRanks(fileName)
 	if err != nil {
 		panic(err)
 	}
@@ -144,7 +144,7 @@ func getResourcePath(fileName string) string {
 	return filepath.Join(baseDir, "resources", fileName)
 }
 
-func loadMergeableRanks(fileName string) (map[string]int, error) {
+func LoadMergeableRanks(fileName string) (map[string]int, error) {
 	file, err := os.Open(getResourcePath(fileName))
 	if err != nil {
 		return nil, err
