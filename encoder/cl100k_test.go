@@ -49,6 +49,7 @@ func normalizeStringForTesting(testString string) string {
 	s = strings.ReplaceAll(s, " ", "␣")
 	return s
 }
+
 func getEncoding() tokgo.Encoding {
 	return ENCODING
 }
