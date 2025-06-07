@@ -6,4 +6,4 @@
 <!-- ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/currybab/tokgo/build-publish.yml) -->
 <!-- Consider adding a CI badge once set up -->
 
-Welcome to TokGo, a Go tokenizer library designed for use with OpenAI models.
+Welcome to TokGo, a Go tokenizer library designed for use with OpenAI models inspired by [tiktoken](https://github.com/openai/tiktoken) and [jtokkit](https://github.com/knuddelsgmbh/jtokkit).
