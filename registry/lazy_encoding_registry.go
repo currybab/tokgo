@@ -1,6 +1,10 @@
 package tokgo
 
-import "github.com/currybab/tokgo/mod"
+import (
+	"fmt"
+
+	"github.com/currybab/tokgo/mod"
+)
 
 type LazyEncodingRegistry struct {
 	*AbstractEncodingRegistry
@@ -23,6 +27,14 @@ func (r *LazyEncodingRegistry) GetEncodingByType(encodingType mod.EncodingType) 
 		return nil, err
 	}
 	return r.AbstractEncodingRegistry.GetEncodingByType(encodingType)
+}
+
+func (r *LazyEncodingRegistry) GetEncodingForModel(modelName string) (mod.Encoding, error) {
+	modelType, exists := mod.ModelTypeFromName(modelName)
+	if !exists {
+		return nil, fmt.Errorf("model %s not found", modelName)
+	}
+	return r.GetEncodingForModelType(*modelType)
 }
 
 func (r *LazyEncodingRegistry) GetEncodingForModelType(modelType mod.ModelType) (mod.Encoding, error) {

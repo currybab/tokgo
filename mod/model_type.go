@@ -1,5 +1,7 @@
 package mod
 
+import "strings"
+
 type ModelType struct {
 	name             string
 	encodingType     EncodingType
@@ -111,7 +113,38 @@ var nameToModelType = map[string]*ModelType{
 	"code-search-ada-code-001":     &CODE_SEARCH_ADA_CODE_001,
 }
 
+func ModelTypeValues() []ModelType {
+	var modelTypes []ModelType
+	for _, model := range nameToModelType {
+		modelTypes = append(modelTypes, *model)
+	}
+	return modelTypes
+}
+
 func ModelTypeFromName(name string) (*ModelType, bool) {
 	model, exists := nameToModelType[name]
-	return model, exists
+	if exists {
+		return model, exists
+	}
+	if strings.HasPrefix(name, GPT_4O.GetName()) {
+		return &GPT_4O, true
+	}
+
+	if strings.HasPrefix(name, GPT_4_32K.GetName()) {
+		return &GPT_4_32K, true
+	}
+
+	if strings.HasPrefix(name, GPT_4.GetName()) {
+		return &GPT_4, true
+	}
+
+	if strings.HasPrefix(name, GPT_3_5_TURBO_16K.GetName()) {
+		return &GPT_3_5_TURBO_16K, true
+	}
+
+	if strings.HasPrefix(name, GPT_3_5_TURBO.GetName()) {
+		return &GPT_3_5_TURBO, true
+	}
+
+	return nil, false
 }

@@ -2,7 +2,6 @@ package tokgo
 
 import (
 	"fmt"
-	"strings"
 	"sync"
 
 	"github.com/currybab/tokgo/encoding"
@@ -34,27 +33,6 @@ func (a *AbstractEncodingRegistry) GetEncodingForModel(modelName string) (mod.En
 	if exists {
 		return a.GetEncodingForModelType(*modelType)
 	}
-
-	if strings.HasPrefix(modelName, mod.GPT_4O.GetName()) {
-		return a.GetEncodingForModelType(mod.GPT_4O)
-	}
-
-	if strings.HasPrefix(modelName, mod.GPT_4_32K.GetName()) {
-		return a.GetEncodingForModelType(mod.GPT_4_32K)
-	}
-
-	if strings.HasPrefix(modelName, mod.GPT_4.GetName()) {
-		return a.GetEncodingForModelType(mod.GPT_4)
-	}
-
-	if strings.HasPrefix(modelName, mod.GPT_3_5_TURBO_16K.GetName()) {
-		return a.GetEncodingForModelType(mod.GPT_3_5_TURBO_16K)
-	}
-
-	if strings.HasPrefix(modelName, mod.GPT_3_5_TURBO.GetName()) {
-		return a.GetEncodingForModelType(mod.GPT_3_5_TURBO)
-	}
-
 	return nil, fmt.Errorf("model %s not found", modelName)
 }
 
