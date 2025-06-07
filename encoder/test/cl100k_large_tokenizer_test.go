@@ -4,16 +4,16 @@ import (
 	"os"
 	"testing"
 
-	"github.com/currybab/tokgo"
 	"github.com/currybab/tokgo/encoding"
+	"github.com/currybab/tokgo/mod"
 )
 
 // Environment Setup
 func setup(t *testing.T) (string, bool) {
-	originalThresholdValue, originalWasSet := os.LookupEnv(tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY)
-	setEnvErr := os.Setenv(tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, "0")
+	originalThresholdValue, originalWasSet := os.LookupEnv(mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY)
+	setEnvErr := os.Setenv(mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, "0")
 	if setEnvErr != nil {
-		t.Fatalf("Failed to set environment variable '%s' to '0': %v", tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, setEnvErr)
+		t.Fatalf("Failed to set environment variable '%s' to '0': %v", mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, setEnvErr)
 	}
 	ENCODING = encoding.Cl100kBase()
 	return originalThresholdValue, originalWasSet
@@ -21,14 +21,14 @@ func setup(t *testing.T) (string, bool) {
 
 func teardown(t *testing.T, originalThresholdValue string, originalWasSet bool) {
 	if !originalWasSet {
-		unsetEnvErr := os.Unsetenv(tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY)
+		unsetEnvErr := os.Unsetenv(mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY)
 		if unsetEnvErr != nil {
-			t.Logf("Error trying to unset environment variable '%s': %v", tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, unsetEnvErr)
+			t.Logf("Error trying to unset environment variable '%s': %v", mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, unsetEnvErr)
 		}
 	} else {
-		restoreEnvErr := os.Setenv(tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, originalThresholdValue)
+		restoreEnvErr := os.Setenv(mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, originalThresholdValue)
 		if restoreEnvErr != nil {
-			t.Logf("Failed to restore environment variable '%s' to '%s': %v", tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, originalThresholdValue, restoreEnvErr)
+			t.Logf("Failed to restore environment variable '%s' to '%s': %v", mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY, originalThresholdValue, restoreEnvErr)
 		}
 	}
 

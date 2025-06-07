@@ -1,8 +1,8 @@
-package registry
+package tokgo
 
-import "github.com/currybab/tokgo"
+import "github.com/currybab/tokgo/mod"
 
-func NewDefaultEncodingRegistry() tokgo.EncodingRegistry {
+func NewDefaultEncodingRegistry() mod.EncodingRegistry {
 	reg := &DefaultEncodingRegistry{
 		AbstractEncodingRegistry: &AbstractEncodingRegistry{},
 	}
@@ -10,7 +10,7 @@ func NewDefaultEncodingRegistry() tokgo.EncodingRegistry {
 	return reg
 }
 
-func NewLazyEncodingRegistry() tokgo.EncodingRegistry {
+func NewLazyEncodingRegistry() mod.EncodingRegistry {
 	return &LazyEncodingRegistry{
 		AbstractEncodingRegistry: &AbstractEncodingRegistry{},
 	}

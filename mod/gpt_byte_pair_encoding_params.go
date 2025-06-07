@@ -1,4 +1,4 @@
-package tokgo
+package mod
 
 import (
 	regexp "github.com/dlclark/regexp2"

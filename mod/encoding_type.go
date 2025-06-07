@@ -1,4 +1,4 @@
-package tokgo
+package mod
 
 type EncodingType string
 

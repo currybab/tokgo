@@ -7,8 +7,8 @@ import (
 
 	regexp "github.com/dlclark/regexp2"
 
-	"github.com/currybab/tokgo"
 	"github.com/currybab/tokgo/encoder"
+	"github.com/currybab/tokgo/mod"
 	"github.com/currybab/tokgo/parser"
 )
 
@@ -31,12 +31,12 @@ func newInternalResult(tokens []int, tokenCount int, truncated bool, lastProcess
 	}
 }
 
-func (i *internalResult) ToEncodingResult() *tokgo.EncodingResult {
+func (i *internalResult) ToEncodingResult() *mod.EncodingResult {
 	if len(i.tokens) != i.tokenCount {
 		panic(fmt.Sprintf("Token count does not match token list size (tokenCount=%v, tokens size=%v)", i.tokenCount, len(i.tokens)))
 	}
 
-	return tokgo.NewEncodingResult(i.tokens, i.truncated, i.lastProcessedCharacterIndex)
+	return mod.NewEncodingResult(i.tokens, i.truncated, i.lastProcessedCharacterIndex)
 }
 
 func (i *internalResult) ToTokenCount() int {
@@ -50,7 +50,7 @@ type GptBytePairEncoding struct {
 	specialEncoder *encoder.SpecialEncoder
 }
 
-func NewGptBytePairEncoding(params *tokgo.GptBytePairEncodingParams) *GptBytePairEncoding {
+func NewGptBytePairEncoding(params *mod.GptBytePairEncodingParams) *GptBytePairEncoding {
 	return &GptBytePairEncoding{
 		name:           params.GetName(),
 		pattern:        params.GetPattern(),
@@ -124,7 +124,7 @@ func (e *GptBytePairEncoding) EncodeToIntArray(text string) []int {
 	return e.Encode(text, math.MaxInt).GetTokens()
 }
 
-func (e *GptBytePairEncoding) Encode(text string, maxTokens int) *tokgo.EncodingResult {
+func (e *GptBytePairEncoding) Encode(text string, maxTokens int) *mod.EncodingResult {
 	return e.encodeInternal(text, maxTokens, true).ToEncodingResult()
 }
 
@@ -132,7 +132,7 @@ func (e *GptBytePairEncoding) EncodeOrdinaryToIntArray(text string) []int {
 	return e.EncodeOrdinary(text, math.MaxInt).GetTokens()
 }
 
-func (e *GptBytePairEncoding) EncodeOrdinary(text string, maxTokens int) *tokgo.EncodingResult {
+func (e *GptBytePairEncoding) EncodeOrdinary(text string, maxTokens int) *mod.EncodingResult {
 	return e.encodeOrdinaryInternal(text, maxTokens, true).ToEncodingResult()
 }
 

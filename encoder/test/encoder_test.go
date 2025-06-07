@@ -10,8 +10,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/currybab/tokgo"
 	"github.com/currybab/tokgo/encoding"
+	"github.com/currybab/tokgo/mod"
 	"github.com/currybab/tokgo/parser"
 	"github.com/emirpasic/gods/v2/maps/treemap"
 	"github.com/stretchr/testify/assert"
@@ -49,8 +49,8 @@ func normalizeStringForTesting(testString string) string {
 	return s
 }
 
-func getEncoding() tokgo.Encoding {
-	// fmt.Println("Using encoding:", os.Getenv(tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY))
+func getEncoding() mod.Encoding {
+	// fmt.Println("Using encoding:", os.Getenv(mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY))
 	return ENCODING
 }
 

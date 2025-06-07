@@ -12,7 +12,7 @@ import (
 
 	regexp "github.com/dlclark/regexp2"
 
-	"github.com/currybab/tokgo"
+	"github.com/currybab/tokgo/mod"
 	"github.com/currybab/tokgo/parser"
 )
 
@@ -49,7 +49,7 @@ var (
 	}
 )
 
-func R50kBase() tokgo.Encoding {
+func R50kBase() mod.Encoding {
 	return from50kParameters(
 		"r50k_base",
 		"r50k_base.tiktoken",
@@ -57,7 +57,7 @@ func R50kBase() tokgo.Encoding {
 	)
 }
 
-func P50kBase() tokgo.Encoding {
+func P50kBase() mod.Encoding {
 	return from50kParameters(
 		"p50k_base",
 		"p50k_base.tiktoken",
@@ -65,7 +65,7 @@ func P50kBase() tokgo.Encoding {
 	)
 }
 
-func P50kEdit() tokgo.Encoding {
+func P50kEdit() mod.Encoding {
 	return from50kParameters(
 		"p50k_edit",
 		"p50k_base.tiktoken",
@@ -73,7 +73,7 @@ func P50kEdit() tokgo.Encoding {
 	)
 }
 
-func Cl100kBase() tokgo.Encoding {
+func Cl100kBase() mod.Encoding {
 	mergeableRanks, err := LoadMergeableRanks("cl100k_base.tiktoken")
 	if err != nil {
 		panic(err)
@@ -82,7 +82,7 @@ func Cl100kBase() tokgo.Encoding {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	params := tokgo.NewGptBytePairEncodingParams(
+	params := mod.NewGptBytePairEncodingParams(
 		"cl100k_base",
 		nil,
 		mergeableRanks,
@@ -91,7 +91,7 @@ func Cl100kBase() tokgo.Encoding {
 	return NewCl100kGptBytePairEncoding(params)
 }
 
-func O200kBase() tokgo.Encoding {
+func O200kBase() mod.Encoding {
 	mergeableRanks, err := LoadMergeableRanks("o200k_base.tiktoken")
 	if err != nil {
 		panic(err)
@@ -109,7 +109,7 @@ func O200kBase() tokgo.Encoding {
 	if err != nil {
 		panic(err)
 	}
-	params := tokgo.NewGptBytePairEncodingParams(
+	params := mod.NewGptBytePairEncodingParams(
 		"o200k_base",
 		regex,
 		mergeableRanks,
@@ -118,7 +118,7 @@ func O200kBase() tokgo.Encoding {
 	return FromParameters(params)
 }
 
-func from50kParameters(name, fileName string, specialTokens map[string]int) tokgo.Encoding {
+func from50kParameters(name, fileName string, specialTokens map[string]int) mod.Encoding {
 	regex, err := regexp.Compile(`'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+`, regexp.None)
 	if err != nil {
 		panic(err)
@@ -127,7 +127,7 @@ func from50kParameters(name, fileName string, specialTokens map[string]int) tokg
 	if err != nil {
 		panic(err)
 	}
-	params := tokgo.NewGptBytePairEncodingParams(
+	params := mod.NewGptBytePairEncodingParams(
 		name,
 		regex,
 		mergeableRanks,
@@ -178,7 +178,7 @@ type Cl100kGptBytePairEncoding struct {
 	*GptBytePairEncoding
 }
 
-func NewCl100kGptBytePairEncoding(params *tokgo.GptBytePairEncodingParams) tokgo.Encoding {
+func NewCl100kGptBytePairEncoding(params *mod.GptBytePairEncodingParams) mod.Encoding {
 	return &Cl100kGptBytePairEncoding{
 		GptBytePairEncoding: NewGptBytePairEncoding(params),
 	}
@@ -194,6 +194,6 @@ func (e *Cl100kGptBytePairEncoding) encodeOrdinaryInternalToInt(text string, max
 	return tokenCount[0]
 }
 
-func FromParameters(params *tokgo.GptBytePairEncodingParams) tokgo.Encoding {
+func FromParameters(params *mod.GptBytePairEncodingParams) mod.Encoding {
 	return NewGptBytePairEncoding(params)
 }

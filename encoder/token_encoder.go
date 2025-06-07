@@ -5,9 +5,8 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/currybab/tokgo/mod"
 	"github.com/emirpasic/gods/v2/maps/treemap"
-
-	"github.com/currybab/tokgo"
 )
 
 const (
@@ -23,7 +22,7 @@ type TokenEncoder struct {
 
 func NewTokenEncoder(encoder map[string]int) *TokenEncoder {
 	if len(encoder) > 0 {
-		thresholdKey := os.Getenv(tokgo.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY)
+		thresholdKey := os.Getenv(mod.VERY_LARGE_TOKENIZER_BYTE_THRESHOLD_KEY)
 		if thresholdKey == "" {
 			thresholdKey = "500"
 		}

@@ -1,4 +1,4 @@
-package tokgo
+package mod
 
 type ModelType struct {
 	name             string

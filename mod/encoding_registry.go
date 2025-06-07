@@ -1,4 +1,4 @@
-package tokgo
+package mod
 
 type EncodingRegistry interface {
 	GetEncoding(encodingName string) (Encoding, error)

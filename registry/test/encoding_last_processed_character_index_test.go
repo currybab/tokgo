@@ -3,12 +3,12 @@ package registry_test
 import (
 	"testing"
 
-	"github.com/currybab/tokgo"
-	"github.com/currybab/tokgo/registry"
+	"github.com/currybab/tokgo/mod"
+	tokgo "github.com/currybab/tokgo/registry"
 	"github.com/stretchr/testify/assert"
 )
 
-var ENCODING, _ = registry.NewDefaultEncodingRegistry().GetEncodingByType(tokgo.CL100K_BASE)
+var ENCODING, _ = tokgo.NewDefaultEncodingRegistry().GetEncodingByType(mod.CL100K_BASE)
 
 func TestNullInput(t *testing.T) {
 	encodingResult := ENCODING.Encode("", 10)
