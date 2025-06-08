@@ -57,7 +57,7 @@ func TestR50kBaseBaseEncodeOrdinaryEncodesCorrectlyWithMaxTokensSet(t *testing.T
 	WrapTest(t, "../resources/test/r50k_base_encodings.csv", func(input string, output string, outputMaxTokens10 string) {
 		expected := parseEncodingString(output)
 		expectedWithMaxTokens := parseEncodingString(outputMaxTokens10)
-		encodingResult := R50K_BASE_ENCODING.Encode(input, 10)
+		encodingResult := R50K_BASE_ENCODING.EncodeOrdinary(input, 10)
 
 		assert.Equal(t, expectedWithMaxTokens, encodingResult.GetTokens())
 		assert.Equal(t, len(expected) > len(expectedWithMaxTokens), encodingResult.IsTruncated())
