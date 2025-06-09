@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"strings"
+	"unicode/utf8"
 
 	regexp "github.com/dlclark/regexp2"
 
@@ -86,7 +87,7 @@ func (e *GptBytePairEncoding) encodeOrdinaryInternal(text string, maxTokenCount 
 				tokens[i] = out[i]
 			}
 			decoded := e.Decode(tokens)
-			if strings.HasPrefix(text, decoded) {
+			if utf8.Valid([]byte(decoded)) && strings.HasPrefix(text, decoded) {
 				// If decoded text is equal to the head of the original text, we can safely return the tokens
 				return newInternalResult(tokens, -1, len(text) > len(decoded), len(decoded)-1)
 			}
