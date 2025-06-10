@@ -10,7 +10,7 @@ Welcome to TokGo, a Go tokenizer library designed for use with OpenAI models ins
 
 ## ⚡ Performance
 
-`tokgo` is designed to be highly performant, with a particular focus on memory efficiency. Here's a comparison with another popular Go tokenizer library, `tiktoken-go`, based on benchmarks run on an Apple M1 Pro.
+`tokgo` is designed to be highly performant, with a particular focus on memory efficiency. Here's a comparison with another popular Go tokenizer library, [`tiktoken-go`](https://github.com/pkoukk/tiktoken-go), based on benchmarks run on an Apple M1 Pro.
 
 The benchmark measures the performance of encoding a large text file ([udhr concatted txt](https://research.ics.aalto.fi/cog/data/udhr/)) line by line.
 
